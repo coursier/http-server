@@ -3,7 +3,7 @@
 Minimal JVM HTTP server, à la [`http.server`](https://docs.python.org/3/library/http.server.html), mainly for test purposes
 
 [![Build Status](https://travis-ci.org/coursier/http-server.svg?branch=master)](https://travis-ci.org/coursier/http-server)
-[![Maven Central](https://img.shields.io/maven-central/v/io.get-coursier/http-server.svg)](https://maven-badges.herokuapp.com/maven-central/io.get-coursier/http-server)
+[![Maven Central](https://img.shields.io/maven-central/v/io.get-coursier/http-server_2.12.svg)](https://maven-badges.herokuapp.com/maven-central/io.get-coursier/http-server_2.12)
 
 Relies on [http4s](https://github.com/http4s/http4s)
 
