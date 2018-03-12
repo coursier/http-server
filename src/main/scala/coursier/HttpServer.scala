@@ -3,13 +3,13 @@ package coursier
 import java.io.{File, FileOutputStream}
 import java.net.NetworkInterface
 import java.nio.channels.{FileLock, OverlappingFileLockException}
+import java.nio.file.Files
 
 import org.http4s._
 import org.http4s.dsl._
-import org.http4s.headers.{Authorization, `Content-Type`}
+import org.http4s.headers.{Authorization, `Content-Length`, `Content-Type`}
 import org.http4s.server.blaze.BlazeBuilder
 import org.http4s.server.{Server, ServerApp}
-
 import caseapp._
 import caseapp.core.WithHelp
 
@@ -244,7 +244,10 @@ object HttpServer {
                 directoryListingPage(f, relPath).flatMap(page =>
                   Ok(page).withContentType(Some(`Content-Type`(MediaType.`text/html`)))
                 )
-              case Some(false) => Ok(f)
+              case Some(false) =>
+                val b = Files.readAllBytes(f.toPath)
+                Console.err.println(s"Length of $f data: ${b.length}")
+                Ok(b)
               case _ => NotFound()
             }
           } yield resp
