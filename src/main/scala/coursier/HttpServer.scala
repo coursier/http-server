@@ -14,6 +14,7 @@ import caseapp._
 import caseapp.core.WithHelp
 
 import scala.collection.JavaConverters._
+import scala.concurrent.duration.Duration
 import scalaz.concurrent.Task
 
 final case class AuthOptions(
@@ -80,7 +81,8 @@ final case class HttpServerOptions(
     acceptWrite: Boolean = false,
   @ExtraName("l")
   @HelpMessage("Generate content listing pages for directories")
-    listPages: Boolean = false
+    listPages: Boolean = false,
+  timeout: Option[String] = None
 )
 
 object HttpServer {
@@ -277,6 +279,11 @@ object HttpServer {
         b = b.mountService(postService(baseDir, options.auth, verbosityLevel))
 
       b = b.mountService(getService(baseDir, options.auth, verbosityLevel, options.listPages))
+
+      for (t <- options.timeout) {
+        val d = Duration(t)
+        b = b.withIdleTimeout(d)
+      }
 
       b
     }
