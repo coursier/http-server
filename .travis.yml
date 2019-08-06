@@ -2,7 +2,7 @@ language: scala
 scala:
 - 2.12.4
 jdk:
-- oraclejdk8
+- openjdk8
 script: sbt -batch ++${TRAVIS_SCALA_VERSION} test $(if [[ "$TRAVIS_PULL_REQUEST" ==
   false && "$TRAVIS_BRANCH" == master ]]; then echo "publish"; fi)
 cache:
