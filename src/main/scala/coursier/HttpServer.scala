@@ -8,7 +8,6 @@ import java.nio.file.Files
 import org.http4s._
 import org.http4s.dsl._
 import org.http4s.headers.{Authorization, `Content-Length`, `Content-Type`}
-import org.http4s.server.blaze.BlazeBuilder
 import org.http4s.server.{Server, ServerApp}
 import caseapp._
 import caseapp.core.WithHelp
@@ -16,6 +15,8 @@ import caseapp.core.WithHelp
 import scala.collection.JavaConverters._
 import scala.concurrent.duration.Duration
 import scalaz.concurrent.Task
+import org.http4s.MediaType.text
+import org.http4s.server.blaze.BlazeServerBuilder
 
 final case class AuthOptions(
   @ExtraName("u")
@@ -244,7 +245,7 @@ object HttpServer {
             resp <- isDirOpt match {
               case Some(true) if listPages =>
                 directoryListingPage(f, relPath).flatMap(page =>
-                  Ok(page).withContentType(Some(`Content-Type`(MediaType.`text/html`)))
+                  Ok(page).withContentType(Some(`Content-Type`(MediaType.text.html)))
                 )
               case Some(false) =>
                 val b = Files.readAllBytes(f.toPath)
@@ -271,7 +272,7 @@ object HttpServer {
     val verbosityLevel = options.verbosity.verbosityLevel
 
     val builder = {
-      var b = BlazeBuilder.bindHttp(options.port, options.host)
+      var b = BlazeServerBuilder.bindHttp(options.port, options.host)
 
       if (options.acceptWrite || options.acceptPut)
         b = b.mountService(putService(baseDir, options.auth, verbosityLevel))
