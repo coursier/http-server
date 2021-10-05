@@ -1,6 +1,6 @@
 language: scala
 scala:
-- 2.12.4
+- 2.12.15
 jdk:
 - openjdk8
 script: sbt -batch ++${TRAVIS_SCALA_VERSION} test $(if [[ "$TRAVIS_PULL_REQUEST" ==
