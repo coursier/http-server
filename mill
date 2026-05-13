@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+set -eu
+
+version="$(cat .mill-version)"
+mill_home="${MILL_CACHE_DIR:-"${HOME}/.cache/mill"}"
+launcher="${mill_home}/mill-${version}"
+
+if [ ! -x "$launcher" ]; then
+  mkdir -p "$mill_home"
+  curl -fsSL "https://repo1.maven.org/maven2/com/lihaoyi/mill-dist/${version}/mill-dist-${version}-mill.sh" -o "$launcher"
+  chmod +x "$launcher"
+fi
+
+exec "$launcher" "$@"

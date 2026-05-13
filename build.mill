@@ -1,0 +1,36 @@
+package build
+
+import mill.*
+import mill.api.*
+import mill.scalalib.*
+import mill.scalalib.publish.*
+
+object `package` extends SbtModule, PublishModule {
+  def scalaVersion = "3.8.3"
+  def publishVersion = "1.0.2-SNAPSHOT"
+  def artifactName = "http-server"
+  def mainClass = Some("coursier.HttpServerApp")
+
+  def scalacOptions = Seq("-feature", "-deprecation")
+
+  def mvnDeps = Seq(
+    mvn"org.http4s::http4s-ember-server:0.23.34",
+    mvn"org.http4s::http4s-dsl:0.23.34",
+    mvn"org.slf4j:slf4j-nop:2.0.18"
+  )
+
+  def pomSettings = PomSettings(
+    description = "Minimal JVM HTTP server",
+    organization = "io.get-coursier",
+    url = "https://github.com/coursier/http-server",
+    licenses = Seq(License.`Apache-2.0`),
+    versionControl = VersionControl.github("coursier", "http-server"),
+    developers = Seq(
+      Developer(
+        id = "alexarchambault",
+        name = "Alexandre Archambault",
+        url = "https://github.com/alexarchambault"
+      )
+    )
+  )
+}
